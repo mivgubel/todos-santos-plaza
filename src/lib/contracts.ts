@@ -15,6 +15,10 @@ export const NFT_ADDRESS =
   ((import.meta.env.VITE_NFT_ADDRESS as string | undefined) ??
     "0x0000000000000000000000000000000000000000") as `0x${string}`;
 
+export const DIST_ADDRESS =
+  ((import.meta.env.VITE_DIST_ADDRESS as string | undefined) ??
+    "0x0000000000000000000000000000000000000000") as `0x${string}`;
+
 export const SEPOLIA_EXPLORER = "https://sepolia.etherscan.io";
 export const FAUCET_AMOUNT = "500"; // mUSD entregados por el faucet
 

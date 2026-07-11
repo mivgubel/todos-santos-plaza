@@ -100,11 +100,17 @@ function Landing() {
         {/* NAV */}
         <nav className="flex items-center justify-between">
           <img src={logo.url} alt="Todos Santos" className="h-14 md:h-16 drop-shadow" />
-          <div className="hidden md:flex gap-6 text-sm font-bold uppercase tracking-wider">
+          <div className="hidden md:flex gap-6 text-sm font-bold uppercase tracking-wider items-center">
             <a href="#proyecto" className="hover:text-fiesta-red">El proyecto</a>
             <a href="#como" className="hover:text-fiesta-red">Cómo funciona</a>
             <a href="#preventa" className="hover:text-fiesta-red">Preventa</a>
             <a href="#contacto" className="hover:text-fiesta-red">Contacto</a>
+            <Link
+              to="/dashboard"
+              className="rounded-full bg-fiesta-red text-white px-4 py-2 hover:bg-fiesta-red/90"
+            >
+              🎟️ Mi panel
+            </Link>
           </div>
         </nav>
 

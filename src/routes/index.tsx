@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import mascota from "@/assets/mascota.asset.json";
 import santo from "@/assets/santo.asset.json";

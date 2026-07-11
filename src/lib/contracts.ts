@@ -98,4 +98,28 @@ export const nftAbi = [
     inputs: [],
     outputs: [],
   },
+  {
+    type: "function",
+    name: "balanceOf",
+    stateMutability: "view",
+    inputs: [{ name: "owner", type: "address" }],
+    outputs: [{ type: "uint256" }],
+  },
+] as const;
+
+export const distAbi = [
+  {
+    type: "function",
+    name: "withdrawableDividendOf",
+    stateMutability: "view",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "claim",
+    stateMutability: "nonpayable",
+    inputs: [],
+    outputs: [],
+  },
 ] as const;

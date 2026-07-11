@@ -74,7 +74,7 @@ const steps = [
   {
     n: "01",
     title: "Preventa de NFTs",
-    desc: "Adquieres una pieza de la colección con mUSD. Cada NFT es tu boleto a la plazuela.",
+    desc: "Adquieres una pieza de la colección con USDC. Cada NFT es tu boleto a la plazuela.",
   },
   {
     n: "02",
@@ -235,12 +235,12 @@ function Landing() {
               Sé parte de la <span className="text-fiesta-red">plazuela</span>
             </h2>
             <p className="mt-4 text-ink/75 font-body text-lg">
-              Adquiere tu NFT en <b>mUSD</b> sobre la red <b>Sepolia</b>. Login
+              Adquiere tu NFT en <b>USDC</b> sobre la red <b>Sepolia</b>. Login
               con tu correo — nosotros creamos tu wallet.
             </p>
             <ul className="mt-4 space-y-2 text-sm font-semibold">
               <li>✅ Sin extensiones, solo tu email</li>
-              <li>✅ Pago 100% en mUSD (mock USDC, 6 decimales)</li>
+              <li>✅ Pago 100% en USDC</li>
               <li>✅ Faucet gratis para probar</li>
             </ul>
           </div>

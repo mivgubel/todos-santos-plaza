@@ -38,6 +38,7 @@ export function DashboardCard() {
 
   const [nftBalance, setNftBalance] = useState<bigint | null>(null);
   const [dividends, setDividends] = useState<bigint>(0n);
+  const [claimedTotal, setClaimedTotal] = useState<bigint>(0n);
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState(false);
   const [tx, setTx] = useState<Tx | null>(null);
@@ -61,13 +62,26 @@ export function DashboardCard() {
       setNftBalance(bal);
 
       if (distConfigured) {
-        const div = (await publicClient.readContract({
-          address: DIST_ADDRESS,
-          abi: distAbi,
-          functionName: "withdrawableDividendOf",
-          args: [address],
-        }).catch(() => 0n)) as bigint;
-        setDividends(div);
+        const [div, claimed] = await Promise.all([
+          publicClient
+            .readContract({
+              address: DIST_ADDRESS,
+              abi: distAbi,
+              functionName: "withdrawableDividendOf",
+              args: [address],
+            })
+            .catch(() => 0n),
+          publicClient
+            .readContract({
+              address: DIST_ADDRESS,
+              abi: distAbi,
+              functionName: "withdrawnOf",
+              args: [address],
+            })
+            .catch(() => 0n),
+        ]);
+        setDividends(div as bigint);
+        setClaimedTotal(claimed as bigint);
       }
     } catch (e) {
       console.error(e);
@@ -116,6 +130,10 @@ export function DashboardCard() {
   }
 
   const divLabel = useMemo(() => formatUnits(dividends, 6), [dividends]);
+  const claimedLabel = useMemo(
+    () => formatUnits(claimedTotal, 6),
+    [claimedTotal],
+  );
 
   if (!ready) {
     return (
@@ -205,12 +223,27 @@ export function DashboardCard() {
                 </p>
                 <p className="font-display text-5xl text-fiesta-green mt-1">
                   {divLabel}
-                  <span className="text-xl ml-1">mUSD</span>
+                  <span className="text-xl ml-1">USDC</span>
                 </p>
                 <p className="text-sm text-ink/70 mt-1">
                   disponibles para reclamar
                 </p>
               </div>
+            </div>
+
+            <div className="mt-4 rounded-2xl bg-fiesta-sky/10 border-2 border-fiesta-sky/30 p-5 flex items-center justify-between gap-3 flex-wrap">
+              <div>
+                <p className="text-[11px] uppercase tracking-wider text-fiesta-sky font-black">
+                  Total de rentas cobradas
+                </p>
+                <p className="text-sm text-ink/70 mt-1">
+                  histórico que ya reclamaste
+                </p>
+              </div>
+              <p className="font-display text-4xl text-fiesta-sky">
+                {claimedLabel}
+                <span className="text-lg ml-1">USDC</span>
+              </p>
             </div>
 
             <button
@@ -222,7 +255,7 @@ export function DashboardCard() {
                 ? "Procesando…"
                 : dividends === 0n
                   ? "Sin rentas disponibles"
-                  : `💰 Claim ${divLabel} mUSD`}
+                  : `💰 Claim ${divLabel} USDC`}
             </button>
 
             {!distConfigured && (

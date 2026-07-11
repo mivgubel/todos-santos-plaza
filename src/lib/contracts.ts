@@ -20,7 +20,14 @@ export const DIST_ADDRESS =
     "0x0000000000000000000000000000000000000000") as `0x${string}`;
 
 export const SEPOLIA_EXPLORER = "https://sepolia.etherscan.io";
-export const FAUCET_AMOUNT = "500"; // mUSD entregados por el faucet
+export const FAUCET_AMOUNT = "2000"; // mUSD que entrega faucet() por llamada (fijo on-chain)
+
+// Imagen del NFT (misma metadata para toda la colección).
+const NFT_IMAGE_CID =
+  "bafybeigs7prcwvioopdett22aheqp2tnbx5glqlrgguxfrnscoqkt75aki";
+export const NFT_IMAGE = `https://${NFT_IMAGE_CID}.ipfs.dweb.link?filename=nft.jpeg`;
+// Gateway alterno (sirve bytes crudos) por si dweb.link devuelve su página de service-worker.
+export const NFT_IMAGE_FALLBACK = `https://${NFT_IMAGE_CID}.ipfs.w3s.link?filename=nft.jpeg`;
 
 export const musdAbi = [
   {
@@ -36,6 +43,13 @@ export const musdAbi = [
     stateMutability: "view",
     inputs: [],
     outputs: [{ type: "uint8" }],
+  },
+  {
+    type: "function",
+    name: "faucet",
+    stateMutability: "nonpayable",
+    inputs: [],
+    outputs: [],
   },
   {
     type: "function",
@@ -79,14 +93,14 @@ export const nftAbi = [
   },
   {
     type: "function",
-    name: "totalSupply",
+    name: "totalMinted",
     stateMutability: "view",
     inputs: [],
     outputs: [{ type: "uint256" }],
   },
   {
     type: "function",
-    name: "MAX_SUPPLY",
+    name: "maxSupply",
     stateMutability: "view",
     inputs: [],
     outputs: [{ type: "uint256" }],
@@ -111,6 +125,14 @@ export const distAbi = [
   {
     type: "function",
     name: "withdrawableDividendOf",
+    stateMutability: "view",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ type: "uint256" }],
+  },
+  {
+    // Total histórico que la cuenta ya ha reclamado (cobrado).
+    type: "function",
+    name: "withdrawnOf",
     stateMutability: "view",
     inputs: [{ name: "account", type: "address" }],
     outputs: [{ type: "uint256" }],

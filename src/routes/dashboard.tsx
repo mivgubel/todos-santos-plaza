@@ -22,7 +22,7 @@ export const Route = createFileRoute("/dashboard")({
       {
         name: "description",
         content:
-          "Consulta tus NFTs de Todos Santos, tus rentas acumuladas y reclama tus dividendos en mUSD.",
+          "Consulta tus NFTs de Todos Santos, tus rentas acumuladas y reclama tus dividendos en USDC.",
       },
       { name: "robots", content: "noindex" },
     ],

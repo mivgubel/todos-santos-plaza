@@ -35,6 +35,7 @@
   --color-fiesta-yellow: var(--fiesta-yellow);
   --color-fiesta-green: var(--fiesta-green);
   --color-fiesta-orange: var(--fiesta-orange);
+  --color-fiesta-sky: var(--fiesta-sky);
   --color-sand: var(--sand);
   --color-sand-deep: var(--sand-deep);
   --color-terracotta: var(--terracotta);
@@ -58,6 +59,7 @@
   --fiesta-yellow: oklch(0.85 0.17 88);   /* amarillo */
   --fiesta-green: oklch(0.62 0.16 145);   /* verde */
   --fiesta-orange: oklch(0.70 0.18 55);
+  --fiesta-sky: oklch(0.68 0.11 236);     /* azul cielo suave (más claro que fiesta-blue) */
 
   --background: var(--sand);
   --foreground: var(--ink);

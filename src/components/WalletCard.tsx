@@ -13,6 +13,8 @@ import {
   FAUCET_AMOUNT,
   MUSD_ADDRESS,
   NFT_ADDRESS,
+  NFT_IMAGE,
+  NFT_IMAGE_FALLBACK,
   SEPOLIA_EXPLORER,
   musdAbi,
   nftAbi,
@@ -49,8 +51,8 @@ export function WalletCard() {
     try {
       const [p, s, m] = await Promise.all([
         publicClient.readContract({ address: NFT_ADDRESS, abi: nftAbi, functionName: "price" }).catch(() => parseUnits("100", 6)),
-        publicClient.readContract({ address: NFT_ADDRESS, abi: nftAbi, functionName: "totalSupply" }).catch(() => 0n),
-        publicClient.readContract({ address: NFT_ADDRESS, abi: nftAbi, functionName: "MAX_SUPPLY" }).catch(() => 0n),
+        publicClient.readContract({ address: NFT_ADDRESS, abi: nftAbi, functionName: "totalMinted" }).catch(() => 0n),
+        publicClient.readContract({ address: NFT_ADDRESS, abi: nftAbi, functionName: "maxSupply" }).catch(() => 0n),
       ]);
       setPrice(p as bigint);
       setSupply(s as bigint);
@@ -107,10 +109,9 @@ export function WalletCard() {
       const hash = await client.writeContract({
         address: MUSD_ADDRESS,
         abi: musdAbi,
-        functionName: "mint",
-        args: [address, parseUnits(FAUCET_AMOUNT, 6)],
+        functionName: "faucet",
       });
-      trackTx(hash, `Faucet · +${FAUCET_AMOUNT} mUSD`);
+      trackTx(hash, `Faucet · +${FAUCET_AMOUNT} USDC`);
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Error";
       setErr(msg);
@@ -131,7 +132,7 @@ export function WalletCard() {
         functionName: "approve",
         args: [NFT_ADDRESS, price],
       });
-      setTx({ hash: approveHash, label: "Aprobando mUSD…", status: "pending" });
+      setTx({ hash: approveHash, label: "Aprobando USDC…", status: "pending" });
       await publicClient.waitForTransactionReceipt({ hash: approveHash });
 
       const buyHash = await client.writeContract({
@@ -172,12 +173,29 @@ export function WalletCard() {
           </div>
           <div className="text-right">
             <div className="text-3xl font-display text-fiesta-red">
-              {priceLabel} <span className="text-lg">mUSD</span>
+              {priceLabel} <span className="text-lg">USDC</span>
             </div>
             <div className="text-sm text-muted-foreground font-semibold">
               {supply.toString()} / {maxSupply.toString() || "—"} vendidos
             </div>
           </div>
+        </div>
+
+        <div className="mt-5 rounded-2xl overflow-hidden border-4 border-fiesta-yellow/50 bg-sand-deep/30 aspect-video">
+          <img
+            src={NFT_IMAGE}
+            alt="NFT Todos Santos"
+            loading="lazy"
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback: si el gateway principal (dweb.link) no sirve la imagen,
+              // reintenta una sola vez con un gateway que devuelve bytes crudos.
+              const img = e.currentTarget;
+              if (img.dataset.fallback) return; // evita bucle
+              img.dataset.fallback = "1";
+              img.src = NFT_IMAGE_FALLBACK;
+            }}
+          />
         </div>
 
         <div className="my-5 h-3 rounded-full bg-sand-deep/40 overflow-hidden">
@@ -212,7 +230,7 @@ export function WalletCard() {
                   Saldo
                 </p>
                 <p className="font-display text-xl text-fiesta-green">
-                  {balLabel} mUSD
+                  {balLabel} USDC
                 </p>
               </div>
             </div>
@@ -223,14 +241,14 @@ export function WalletCard() {
                 disabled={busy}
                 className="rounded-full bg-fiesta-blue text-white font-black py-3 px-4 shadow-[0_5px_0_oklch(0.3_0.15_250)] hover:translate-y-0.5 hover:shadow-[0_3px_0_oklch(0.3_0.15_250)] transition disabled:opacity-50"
               >
-                💧 Obtener mUSD (faucet)
+                💧 Obtener USDC (faucet)
               </button>
               <button
                 onClick={handleBuy}
                 disabled={busy || balance < price}
                 className="btn-fiesta disabled:opacity-50"
               >
-                🎟️ Comprar NFT ({priceLabel} mUSD)
+                🎟️ Comprar NFT ({priceLabel} USDC)
               </button>
             </div>
 

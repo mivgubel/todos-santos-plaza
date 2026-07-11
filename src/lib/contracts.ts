@@ -15,6 +15,10 @@ export const NFT_ADDRESS =
   ((import.meta.env.VITE_NFT_ADDRESS as string | undefined) ??
     "0x0000000000000000000000000000000000000000") as `0x${string}`;
 
+export const DIST_ADDRESS =
+  ((import.meta.env.VITE_DIST_ADDRESS as string | undefined) ??
+    "0x0000000000000000000000000000000000000000") as `0x${string}`;
+
 export const SEPOLIA_EXPLORER = "https://sepolia.etherscan.io";
 export const FAUCET_AMOUNT = "500"; // mUSD entregados por el faucet
 
@@ -90,6 +94,30 @@ export const nftAbi = [
   {
     type: "function",
     name: "buyNFT",
+    stateMutability: "nonpayable",
+    inputs: [],
+    outputs: [],
+  },
+  {
+    type: "function",
+    name: "balanceOf",
+    stateMutability: "view",
+    inputs: [{ name: "owner", type: "address" }],
+    outputs: [{ type: "uint256" }],
+  },
+] as const;
+
+export const distAbi = [
+  {
+    type: "function",
+    name: "withdrawableDividendOf",
+    stateMutability: "view",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "claim",
     stateMutability: "nonpayable",
     inputs: [],
     outputs: [],

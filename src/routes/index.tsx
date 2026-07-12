@@ -48,6 +48,7 @@ const spaces: {
     desc: "Sabores de Puebla y cocina tradicional mexicana en un solo pasillo.",
     color: "bg-fiesta-red",
     emoji: "🌮",
+    img: "/pasillo.jpeg",
   },
   {
     title: "Jardín y Área de Eventos",

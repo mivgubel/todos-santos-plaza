@@ -3,7 +3,6 @@ import { lazy, Suspense } from "react";
 import mascota from "@/assets/mascota.asset.json";
 import santo from "@/assets/santo.asset.json";
 import logo from "@/assets/logo.asset.json";
-import lugar from "@/assets/lugar.asset.json";
 import { useHydrated } from "@/hooks/use-hydrated";
 
 const PrivyProviders = lazy(() =>
@@ -37,7 +36,13 @@ export const Route = createFileRoute("/")({
   component: Landing,
 });
 
-const spaces = [
+const spaces: {
+  title: string;
+  desc: string;
+  color: string;
+  emoji: string;
+  img?: string;
+}[] = [
   {
     title: "Pasillo Gastronómico",
     desc: "Sabores de Puebla y cocina tradicional mexicana en un solo pasillo.",
@@ -49,12 +54,14 @@ const spaces = [
     desc: "Un espacio verde para celebraciones, ferias y encuentros comunitarios.",
     color: "bg-fiesta-green",
     emoji: "🎪",
+    img: "/jardin.jpeg",
   },
   {
     title: "Cafetería",
     desc: "Café de altura, pan dulce y una parada obligada para convivir.",
     color: "bg-fiesta-orange",
     emoji: "☕",
+    img: "/cafe.jpeg",
   },
   {
     title: "Área de Hospedaje",
@@ -67,6 +74,7 @@ const spaces = [
     desc: "Escenario abierto para música, danza y expresión cultural.",
     color: "bg-fiesta-yellow",
     emoji: "🎶",
+    img: "/kiosko.jpeg",
   },
 ];
 
@@ -145,7 +153,7 @@ function Landing() {
           <div className="relative">
             <div className="absolute -inset-6 bg-gradient-to-br from-fiesta-red/30 via-fiesta-yellow/40 to-fiesta-blue/30 rounded-[3rem] blur-2xl" />
             <div className="relative rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl rotate-1">
-              <img src={lugar.url} alt="Plazuela Todos Santos" className="w-full h-80 md:h-[26rem] object-cover" />
+              <img src="/convivencia.jpeg" alt="Convivencia en Todos Santos" className="w-full h-80 md:h-[26rem] object-cover" />
             </div>
             <img
               src={mascota.url}
@@ -167,7 +175,18 @@ function Landing() {
             <h2 className="mt-2 font-display text-4xl md:text-5xl">
               Una plazuela con alma <span className="text-fiesta-red">mexicana</span>
             </h2>
-            <p className="mt-4 text-ink/75 font-body text-lg">
+            <div className="relative mx-auto mt-8 max-w-3xl">
+              <div className="absolute -inset-4 bg-gradient-to-br from-fiesta-red/25 via-fiesta-yellow/30 to-fiesta-blue/25 rounded-[2.5rem] blur-2xl" />
+              <video
+                src="/video_presentacion.mp4"
+                controls
+                playsInline
+                preload="metadata"
+                poster="/lugar.jpeg"
+                className="relative w-full aspect-video rounded-[2rem] border-8 border-white object-cover shadow-2xl"
+              />
+            </div>
+            <p className="mt-8 text-ink/75 font-body text-lg">
               Cinco espacios pensados para el encuentro, la tradición y el
               consumo local, con la estética cálida de una hacienda poblana.
             </p>
@@ -179,9 +198,19 @@ function Landing() {
                 key={s.title}
                 className="group bg-card rounded-3xl overflow-hidden border-4 border-ink/5 shadow-lg hover:-translate-y-1 transition"
               >
-                <div className={`${s.color} h-40 flex items-center justify-center text-6xl relative`}>
-                  <span className="drop-shadow-md">{s.emoji}</span>
-                  <div className="absolute inset-0 opacity-20 mix-blend-multiply bg-[radial-gradient(circle_at_20%_20%,white,transparent_50%)]" />
+                <div className={`${s.color} h-40 flex items-center justify-center text-6xl relative overflow-hidden`}>
+                  {s.img ? (
+                    <img
+                      src={s.img}
+                      alt={s.title}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  ) : (
+                    <>
+                      <span className="drop-shadow-md">{s.emoji}</span>
+                      <div className="absolute inset-0 opacity-20 mix-blend-multiply bg-[radial-gradient(circle_at_20%_20%,white,transparent_50%)]" />
+                    </>
+                  )}
                 </div>
                 <div className="p-6">
                   <h3 className="font-display text-2xl">{s.title}</h3>

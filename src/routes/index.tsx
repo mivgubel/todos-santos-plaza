@@ -68,6 +68,7 @@ const spaces: {
     desc: "Cabañas con identidad hacienda para visitantes y turistas.",
     color: "bg-fiesta-blue",
     emoji: "🛖",
+    img: "/hospedaje.jpeg",
   },
   {
     title: "Kiosco / Foro Artístico",
